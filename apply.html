@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base target="_top">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Careers · DocuSketch</title>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#18181b;--muted:#6b6b72;--line:#e4e2da;--bg:#f5f5f0;--y:#ffe11b;--y3:#fffbe0;--red:#c62828;--green:#1f7a45}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5}
+h1,h2,h3,.brand{font-family:Poppins,Inter,system-ui,sans-serif}
+button{font:inherit;cursor:pointer}
+.top{background:var(--ink);color:#fff;padding:18px 24px}
+.top .in{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:800;font-size:21px;letter-spacing:-.3px}
+.brand i{color:var(--y);font-style:normal}
+.top span{color:#a1a1aa;font-size:13px}
+.wrap{max-width:860px;margin:0 auto;padding:28px 20px 60px}
+.card{background:#fff;border-radius:18px;padding:26px 28px;box-shadow:0 1px 2px rgba(0,0,0,.04);margin-bottom:18px}
+h1{font-size:28px;margin:0 0 6px;letter-spacing:-.4px}
+h2{font-size:19px;margin:0 0 14px}
+h3{font-size:15px;margin:20px 0 6px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
+.chip{background:var(--y3);border:1px solid #f1df7a;border-radius:99px;padding:3px 12px;font-size:13px;font-weight:600}
+.text{white-space:pre-wrap;color:#3f3f46}
+.job{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border-top:1px solid #f0efe9}
+.job:first-of-type{border-top:0}
+.job b{font-size:16.5px;display:block}
+.job em{font-style:normal;color:var(--muted);font-size:13.5px}
+.btn{border:1px solid var(--line);background:#fff;border-radius:11px;padding:10px 18px;font-weight:600}
+.btn:hover{border-color:var(--ink)}
+.btn.y{background:var(--y);border-color:var(--y)}
+.btn.y:hover{filter:brightness(.97)}
+.btn:disabled{opacity:.6;cursor:default}
+.back{border:0;background:none;padding:0;color:var(--muted);font-weight:600;margin-bottom:14px}
+.back:hover{color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+.f label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px}
+.f label s{color:var(--red);text-decoration:none}
+.inp{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 13px;font:inherit;background:#fff;color:var(--ink)}
+.inp:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px var(--y3)}
+.full{grid-column:1/-1}
+.opts{display:grid;gap:8px}
+.opt{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:11px;padding:11px 13px;cursor:pointer;font-weight:500}
+.opt:has(input:checked){border-color:var(--ink);background:var(--y3)}
+.f .opt{display:flex;margin:0;font-size:15px;font-weight:500}
+.opt input{accent-color:#18181b;width:16px;height:16px;margin:0}
+.drop{border:1.5px dashed #cfcdc4;border-radius:12px;padding:18px;text-align:center;cursor:pointer;color:var(--muted)}
+.drop:hover,.drop.on{border-color:var(--ink);background:var(--y3);color:var(--ink)}
+.drop b{color:var(--ink)}
+.hint{color:var(--muted);font-size:13px}
+.err{color:var(--red);font-weight:600;margin-top:14px}
+.hp{position:absolute;left:-5000px;width:1px;height:1px;overflow:hidden}
+.done{text-align:center;padding:46px 28px}
+.done .ok{width:64px;height:64px;border-radius:50%;background:var(--y);display:inline-flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;margin-bottom:14px}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px;margin-right:6px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (max-width:640px){.grid{grid-template-columns:1fr}.card{padding:20px}.job{flex-direction:column;align-items:flex-start}h1{font-size:23px}}
+</style>
+</head>
+<body>
+<div class="top"><div class="in"><div class="brand">Docu<i>Sketch</i> Careers</div><span>Join our team</span></div></div>
+<div class="wrap" id="app"></div>
+<script src="config.js"></script>
+<script>
+window.hrdPublic = async (fn, args) => { let r; try { const res = await fetch(window.HRD_CONFIG.API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ fn, args: args || [] }) }); r = await res.json(); } catch (e) { throw new Error('Could not reach the server. Please check your internet connection and try again.'); } if (r && r.ok) return r.v; throw new Error((r && r.error) || 'Something went wrong. Please try again.'); };
+window.google = { script: { run: (function mk(ok, fail) { return new Proxy({}, { get(_, k) { if (k === 'withSuccessHandler') return f => mk(f, fail); if (k === 'withFailureHandler') return f => mk(ok, f);
+  return (...a) => { hrdPublic(k, a).then(v => ok && ok(v), e => fail && fail(e)); }; } }); })() } };
+(async () => {
+document.getElementById('app').innerHTML = '<div class="card" style="text-align:center;color:#6b6b72">Loading open positions…</div>';
+let B = {};
+try { B = await hrdPublic('getPublicJobs', []); const q = new URLSearchParams(location.search); B.job = q.get('job') || ''; } catch (e) { B = { error: e.message }; }
+const $ = s => document.querySelector(s);
+const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const jobs = B.jobs || [];
+const LOCS = B.locations || [];
+let fileData = null;
+function chips(j) { return [j.location, j.type].filter(Boolean).map(v => '<span class="chip">' + esc(v) + '</span>').join(''); }
+function list() {
+  if (B.error) { $('#app').innerHTML = '<div class="card"><h2>Sorry</h2><p>' + esc(B.error) + '</p></div>'; return; }
+  $('#app').innerHTML = '<div class="card"><h1>Open positions</h1><p class="hint" style="margin:0 0 10px">Pick a job to see the details and apply.</p>' +
+    (jobs.length ? jobs.map(j => '<div class="job"><div><b>' + esc(j.title) + '</b><em>' + esc([j.location, j.type].filter(Boolean).join(' · ')) + '</em></div><button class="btn y" data-j="' + esc(j.id) + '">View and apply</button></div>').join('')
+      : '<p>There are no open positions right now. Please check again soon.</p>') + '</div>';
+  document.querySelectorAll('[data-j]').forEach(b => b.onclick = () => show(b.dataset.j, true));
+}
+function show(id, fromList) {
+  const j = jobs.find(x => x.id === id);
+  if (!j) { list(); if (id) $('#app').insertAdjacentHTML('afterbegin', '<div class="card" style="background:var(--y3)">This job is no longer open. Here are the jobs we are hiring for now.</div>'); return; }
+  fileData = null;
+  $('#app').innerHTML = (jobs.length > 1 || fromList ? '<button class="back" id="back">← All open positions</button>' : '') +
+    '<div class="card"><h1>' + esc(j.title) + '</h1><div class="chips">' + chips(j) + '</div>' +
+    (j.description ? '<h3>About the job</h3><div class="text">' + esc(j.description) + '</div>' : '') +
+    (j.requirements ? '<h3>What we are looking for</h3><div class="text">' + esc(j.requirements) + '</div>' : '') + '</div>' +
+    '<form class="card" id="form" novalidate><h2>Apply for this job</h2><div class="grid">' +
+    '<div class="f"><label>First Name <s>*</s></label><input class="inp" id="fFirst" autocomplete="given-name"></div>' +
+    '<div class="f"><label>Last Name <s>*</s></label><input class="inp" id="fLast" autocomplete="family-name"></div>' +
+    '<div class="f"><label>Gender <s>*</s></label><select class="inp" id="fGen"><option value="">Select</option><option>Female</option><option>Male</option></select></div>' +
+    '<div class="f"><label>Birth Date <s>*</s></label><input class="inp" type="date" id="fBday"></div>' +
+    '<div class="f"><label>Email (@gmail.com) <s>*</s></label><input class="inp" type="email" id="fEmail" placeholder="name@gmail.com" autocomplete="email"></div>' +
+    '<div class="f"><label>Phone <s>*</s></label><input class="inp" id="fPhone" placeholder="+63 9xx xxx xxxx" autocomplete="tel"></div>' +
+    '<div class="f full"><label>Location <s>*</s></label><select class="inp" id="fLoc"><option value="">Select your location</option>' + LOCS.map(l => '<option>' + esc(l) + '</option>').join('') + '</select></div>' +
+    '<div class="f full"><label>How did you hear about us? <s>*</s></label><div class="opts">' + (B.sources || []).map(s => '<label class="opt"><input type="radio" name="src" value="' + esc(s) + '">' + esc(s) + '</label>').join('') + '</div></div>' +
+    '<div class="f full"><label>Resume <s>*</s></label><input type="file" id="fFile" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" hidden>' +
+    '<div class="drop" id="drop"><b>Click to attach your resume</b><br><span class="hint">PDF, Word or image, up to 10 MB</span></div></div>' +
+    '<div class="hp"><input id="fWeb" tabindex="-1" autocomplete="off"></div></div>' +
+    '<div class="err" id="err" hidden></div>' +
+    '<div style="margin-top:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap"><button class="btn y" id="send" type="submit">Submit application</button><span class="hint">We will contact you by email or phone.</span></div></form>';
+  if ($('#back')) $('#back').onclick = list;
+  const pick = f => {
+    if (!f) return;
+    if (f.size > 10 * 1024 * 1024) { fileData = null; $('#drop').innerHTML = '<b>That file is bigger than 10 MB.</b><br><span class="hint">Please choose a smaller file.</span>'; return; }
+    const rd = new FileReader();
+    rd.onload = () => { fileData = { name: f.name, mime: f.type, b64: String(rd.result).split(',')[1] }; $('#drop').classList.add('on'); $('#drop').innerHTML = '<b>✓ ' + esc(f.name) + '</b><br><span class="hint">Click to choose another file</span>'; };
+    rd.readAsDataURL(f);
+  };
+  $('#drop').onclick = () => $('#fFile').click();
+  $('#fFile').onchange = () => pick($('#fFile').files[0]);
+  $('#drop').ondragover = e => { e.preventDefault(); $('#drop').classList.add('on'); };
+  $('#drop').ondrop = e => { e.preventDefault(); pick(e.dataTransfer.files[0]); };
+  $('#form').onsubmit = e => {
+    e.preventDefault();
+    const v = id => $(id).value.trim();
+    const src = document.querySelector('input[name=src]:checked');
+    const email = v('#fEmail').toLowerCase();
+    const bad = !v('#fFirst') || !v('#fLast') ? 'Please type your first and last name.' : !v('#fGen') ? 'Please select your gender.' : !v('#fBday') ? 'Please enter your birth date.'
+      : !/^[^@\s]+@gmail\.com$/.test(email) ? 'Please use a Gmail address (name@gmail.com).' : !v('#fPhone') ? 'Please type your phone number.' : !v('#fLoc') ? 'Please select your location.'
+      : !src ? 'Please tell us how you heard about us.' : !fileData ? 'Please attach your resume.' : '';
+    const err = $('#err');
+    if (bad) { err.textContent = bad; err.hidden = false; return; }
+    err.hidden = true;
+    const btn = $('#send'); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Sending…';
+    const p = { jobId: j.id, firstName: v('#fFirst'), lastName: v('#fLast'), gender: v('#fGen'), birthDate: v('#fBday'), email, phone: v('#fPhone'), location: v('#fLoc'),
+      source: src.value, website: $('#fWeb').value, resumeName: fileData.name, resumeMime: fileData.mime, resumeB64: fileData.b64 };
+    google.script.run.withSuccessHandler(() => {
+      $('#app').innerHTML = '<div class="card done"><div class="ok">✓</div><h1>Thank you, ' + esc(p.firstName) + '!</h1><p>Your application for <b>' + esc(j.title) + '</b> has been sent.<br>Our recruitment team will review it and get in touch with you soon.</p>' +
+        (jobs.length > 1 ? '<button class="btn" id="more">See other open positions</button>' : '') + '</div>';
+      if ($('#more')) $('#more').onclick = list;
+      window.scrollTo(0, 0);
+    }).withFailureHandler(x => {
+      btn.disabled = false; btn.textContent = 'Submit application';
+      err.textContent = String((x && x.message) || x).replace(/^Exception:\s*/, ''); err.hidden = false;
+    }).submitApplication(p);
+  };
+  window.scrollTo(0, 0);
+}
+if (B.job) show(B.job); else if (jobs.length === 1) show(jobs[0].id); else list();
+
+})();
+</script>
+</body>
+</html>

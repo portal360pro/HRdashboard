@@ -1,0 +1,4 @@
+window.HRD_CONFIG = {
+  API_URL: 'PASTE_THE_APPS_SCRIPT_WEB_APP_URL_HERE',
+  CLIENT_ID: 'PASTE_THE_OAUTH_CLIENT_ID_HERE.apps.googleusercontent.com'
+};
